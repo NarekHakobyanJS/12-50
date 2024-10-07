@@ -5,7 +5,7 @@ import { FaShoppingCart, FaUserAlt } from "react-icons/fa";
 import { NavLink } from 'react-router-dom';
 
 
-const Header = ({cart}) => {
+const Header = ({cart, sortPriceToAbove, sortPriceToDown, reset}) => {
   return (
     <header>
       <div className={style.logo_block}>
@@ -13,6 +13,10 @@ const Header = ({cart}) => {
       </div>
       <div className={style.nav_block}>
         <Nav />
+        <button onClick={sortPriceToAbove}>sort price to above</button>
+        <button onClick={sortPriceToDown}>sort price to down</button>
+        <button onClick={reset}>Reset</button>
+
       </div>
       <div className={style.icons_block}>
         <NavLink to='/cart'>
