@@ -39,3 +39,9 @@ header{
     font-size: 18px;
     text-decoration: none;
 }
+
+
+.icons_block > a {
+    text-decoration: none;
+    color : white;
+}

@@ -286,7 +286,12 @@ export const sliderArray = [
       }
     }
   ]
-  
+
+export const users = [
+  {id : 1, name : "Mexak", age : 23, email : 'mexak@gmail.com', password : '1234'},
+  {id : 2, name : "Alisa", age : 32, email : 'alisa@gmail.com', password : '1234'},
+  {id : 3, name : "Sergo", age : 53, email : 'sergo@gmail.com', password : '1234'},
+]
 
   
   /// 20 -> 5 

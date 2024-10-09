@@ -1,32 +1,59 @@
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useNavigate } from 'react-router-dom';
 import Loyout from './components/Loyout/Loyout';
 import { useState } from 'react';
 import HomePage from './pages/HomePage/HomePage';
 import ProductsPage from './pages/ProductsPage/ProductsPage';
+import CartPage from './pages/CartPage/CartPage';
+import OrderPage from './pages/OrderPage/OrderPage';
+import Login from './pages/Login/Login';
+import Profile from './pages/Profile/Profile';
+import Register from './pages/Register/Register';
+
 
 import './App.css';
-import CartPage from './pages/CartPage/CartPage';
-
 
 function App({ products }) {
-
+  const navigate = useNavigate()
+  const [users, setUsers] = useState([
+    { id: 1, name: "Mexak", email: 'mexak@gmail.com', password: '1234' },
+    { id: 2, name: "Alisa", email: 'alisa@gmail.com', password: '1234' },
+    { id: 3, name: "Sergo", email: 'sergo@gmail.com', password: '1234' },
+  ])
+  const [user, setUser] = useState(null);
   const [cart, setCart] = useState([]);
   const [productsFilter, setproductsFilter] = useState(products);
   const [isSorted, setIsSorted] = useState(false);
-  console.log(isSorted);
+
+
+  let createUser = (newUser) => {
+    setUsers((prev) => {
+      return [...prev, {id : 4, ...newUser}]
+    })
+    
+  }
+
+
+  let authUser = (verifUser) => {
+    setUser(verifUser)
+  }
+
+  let logOutUser = () => {
+    setUser(null)
+    navigate('/')
+  }
 
   let sortPriceToAbove = () => {
-    setIsSorted((prev)=> true);
-    setproductsFilter(productsFilter.toSorted((a,b) => a.price - b.price));
+    setIsSorted((prev) => true);
+    setproductsFilter(productsFilter.toSorted((a, b) => a.price - b.price));
   }
 
   let sortPriceToDown = () => {
     setIsSorted((prev) => true);
-    setproductsFilter(productsFilter.toSorted((a,b) => b.price - a.price));
+    setproductsFilter(productsFilter.toSorted((a, b) => b.price - a.price));
   }
 
   let reset = () => {
-    setIsSorted((prev)=> false);
+    setIsSorted((prev) => false);
   }
   let total = cart.reduce((accum, elem) => {
     return accum + elem.initprice
@@ -76,11 +103,20 @@ function App({ products }) {
   return (
     <div className="App">
       <Routes>
-        <Route path='/' element={<Loyout cart={cart} sortPriceToAbove={sortPriceToAbove} 
-        sortPriceToDown={sortPriceToDown} reset={reset} /> }>
+        <Route path='/' element={<Loyout
+          logOutUser={logOutUser}
+          user={user}
+          cart={cart}
+          sortPriceToAbove={sortPriceToAbove}
+          sortPriceToDown={sortPriceToDown}
+          reset={reset} />}>
           <Route index path='/' element={<HomePage />} />
-          <Route path='/products' element={<ProductsPage products={isSorted ? productsFilter : products } addToCart={addToCart} />} />
+          <Route path='/products' element={<ProductsPage products={isSorted ? productsFilter : products} addToCart={addToCart} />} />
           <Route path='/cart' element={<CartPage cart={cart} changeCartToCount={changeCartToCount} total={total} />} />
+          <Route path='/cart/order' element={<OrderPage />} />
+          <Route path='/login' element={<Login users={users} authUser={authUser} />} />
+          <Route path='/profile' element={<Profile />} />
+          <Route path='/register' element={<Register users={users} createUser={createUser}/> }/>
         </Route>
       </Routes>
     </div>

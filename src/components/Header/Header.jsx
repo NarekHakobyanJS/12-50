@@ -5,7 +5,7 @@ import { FaShoppingCart, FaUserAlt } from "react-icons/fa";
 import { NavLink } from 'react-router-dom';
 
 
-const Header = ({cart, sortPriceToAbove, sortPriceToDown, reset}) => {
+const Header = ({ cart, sortPriceToAbove, sortPriceToDown, reset, user, logOutUser }) => {
   return (
     <header>
       <div className={style.logo_block}>
@@ -23,8 +23,16 @@ const Header = ({cart, sortPriceToAbove, sortPriceToDown, reset}) => {
           <FaShoppingCart />
           <sup className={style.cartCount}>{cart.length}</sup>
         </NavLink>
+        {
+          user 
+          ? <>
+            <FaUserAlt /> {user.name}
+            <button onClick={logOutUser}>Log Out</button>
+          </>
+            :
+            <NavLink to='/login'>  Sign In </NavLink>
+        }
 
-        <FaUserAlt />
       </div>
     </header>
   )

@@ -1,13 +1,17 @@
 import { Field, Form, Formik } from 'formik'
+import { useNavigate } from 'react-router-dom'
 
 const OrderForm = ({total}) => {
-
+    const navigate = useNavigate()
+    // console.log(navigate);
+    
     const order = (values) => {
-        let verjnakan = {
+        let byOrder = {
             ...values,
             total
         }
-        console.log(verjnakan)
+        navigate('/cart/order', {state : byOrder})
+        // console.log(verjnakan)
     }
     return (
         <div>
