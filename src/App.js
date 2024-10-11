@@ -3,6 +3,7 @@ import Loyout from './components/Loyout/Loyout';
 import { useState } from 'react';
 import HomePage from './pages/HomePage/HomePage';
 import ProductsPage from './pages/ProductsPage/ProductsPage';
+import ProductPage from './pages/ProductPage/ProductPage';
 import CartPage from './pages/CartPage/CartPage';
 import OrderPage from './pages/OrderPage/OrderPage';
 import Login from './pages/Login/Login';
@@ -11,6 +12,7 @@ import Register from './pages/Register/Register';
 
 
 import './App.css';
+
 
 function App({ products }) {
   const navigate = useNavigate()
@@ -112,6 +114,7 @@ function App({ products }) {
           reset={reset} />}>
           <Route index path='/' element={<HomePage />} />
           <Route path='/products' element={<ProductsPage products={isSorted ? productsFilter : products} addToCart={addToCart} />} />
+          <Route path='/products/:id' element={<ProductPage products={products}/>}/> 
           <Route path='/cart' element={<CartPage cart={cart} changeCartToCount={changeCartToCount} total={total} />} />
           <Route path='/cart/order' element={<OrderPage />} />
           <Route path='/login' element={<Login users={users} authUser={authUser} />} />

@@ -8,7 +8,7 @@
     border-radius: 16px;
 }
 
-.product > img {
+.product > a > img {
     width: 70%;
     height: 170px;
     object-fit: cover;
