@@ -1,6 +1,6 @@
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import Loyout from './components/Loyout/Loyout';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import HomePage from './pages/HomePage/HomePage';
 import ProductsPage from './pages/ProductsPage/ProductsPage';
 import ProductPage from './pages/ProductPage/ProductPage';
@@ -14,7 +14,21 @@ import Register from './pages/Register/Register';
 import './App.css';
 
 
-function App({ products }) {
+function App() {
+  const [products, setProducts] = useState([])
+
+  useEffect(()=> {
+    fetch('https://fakestoreapi.com/products')
+      .then((res) => res.json())
+      .then((res) => setProducts(res.map(el => {
+        return {
+          ...el,
+          initprice : el.price,
+          count : 1
+        }
+      })))
+  }, [])
+
   const navigate = useNavigate()
   const [users, setUsers] = useState([
     { id: 1, name: "Mexak", email: 'mexak@gmail.com', password: '1234' },
@@ -114,7 +128,7 @@ function App({ products }) {
           reset={reset} />}>
           <Route index path='/' element={<HomePage />} />
           <Route path='/products' element={<ProductsPage products={isSorted ? productsFilter : products} addToCart={addToCart} />} />
-          <Route path='/products/:id' element={<ProductPage products={products}/>}/> 
+          <Route path='/products/:id' element={<ProductPage />}/> 
           <Route path='/cart' element={<CartPage cart={cart} changeCartToCount={changeCartToCount} total={total} />} />
           <Route path='/cart/order' element={<OrderPage />} />
           <Route path='/login' element={<Login users={users} authUser={authUser} />} />
