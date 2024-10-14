@@ -7,10 +7,11 @@ const Login = ({ users, authUser }) => {
     const navigate = useNavigate()
 
     const authorization = (values, users) => {
-        const user = users.find((u) => u.email === values.email && u.password === values.password)
+        const user = users.find((u) => u.email === values.email && u.username === values.username)
         if (user) {
+            console.log(user);
             authUser(user)
-            navigate('/profile', { state: user })
+            navigate(`/profile/${user.id}`)
         }else {
             navigate('/register')
         }
@@ -21,13 +22,13 @@ const Login = ({ users, authUser }) => {
             <Formik
                 initialValues={{
                     email: '',
-                    password: ''
+                    username: ''
                 }}
                 onSubmit={(values) => authorization(values, users)}
             >
                 <Form>
-                    <Field name='email' />
-                    <Field name='password' />
+                    <Field name='email' placeholder='email'/>
+                    <Field name='username' placeholder='password'/>
                     <button type='submit'>Login</button>
                 </Form>
             </Formik>

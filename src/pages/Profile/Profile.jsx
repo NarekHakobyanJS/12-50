@@ -1,12 +1,23 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import style from './Profile.module.css'
-import { useLocation } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 
 const Profile = () => {
-    const { state } = useLocation()
+    const [user, setUser] = useState(null)
+    const {id} = useParams();
+
+   
+
+    useEffect(() => {
+        fetch(`https://jsonplaceholder.typicode.com/users/${id}`)
+            .then((res) => res.json())
+            .then(res => setUser(res)) 
+    }, [])
+    
+    
     return (
         <div>
-            Profile : {state.email}
+            <h1>{user?.name}</h1>
         </div>
     )
 }

@@ -16,7 +16,8 @@ import './App.css';
 
 function App() {
   const [products, setProducts] = useState([])
-
+  const [users, setUsers] = useState([])
+  // getProducts
   useEffect(()=> {
     fetch('https://fakestoreapi.com/products')
       .then((res) => res.json())
@@ -29,12 +30,16 @@ function App() {
       })))
   }, [])
 
+  //getUsers
+  useEffect(() => {
+    fetch('https://jsonplaceholder.typicode.com/users')
+      .then((res) => res.json())
+      .then((res) => setUsers(res))
+  }, [])
+
+  
   const navigate = useNavigate()
-  const [users, setUsers] = useState([
-    { id: 1, name: "Mexak", email: 'mexak@gmail.com', password: '1234' },
-    { id: 2, name: "Alisa", email: 'alisa@gmail.com', password: '1234' },
-    { id: 3, name: "Sergo", email: 'sergo@gmail.com', password: '1234' },
-  ])
+  
   const [user, setUser] = useState(null);
   const [cart, setCart] = useState([]);
   const [productsFilter, setproductsFilter] = useState(products);
@@ -132,7 +137,7 @@ function App() {
           <Route path='/cart' element={<CartPage cart={cart} changeCartToCount={changeCartToCount} total={total} />} />
           <Route path='/cart/order' element={<OrderPage />} />
           <Route path='/login' element={<Login users={users} authUser={authUser} />} />
-          <Route path='/profile' element={<Profile />} />
+          <Route path='/profile/:id' element={<Profile />} />
           <Route path='/register' element={<Register users={users} createUser={createUser}/> }/>
         </Route>
       </Routes>
