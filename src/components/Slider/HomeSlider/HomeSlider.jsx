@@ -19,8 +19,8 @@ const HomeSlider = () => {
     <div>
         <Slider {...settings}>
         {
-          sliderArray.map((el) => {
-            return <img src={el}/>
+          sliderArray.map((el, index) => {
+            return < img src={el} key={index}/>
           })
         }
       </Slider>

@@ -9,37 +9,39 @@ import OrderPage from './pages/OrderPage/OrderPage';
 import Login from './pages/Login/Login';
 import Profile from './pages/Profile/Profile';
 import Register from './pages/Register/Register';
-
+import axios from 'axios'
 
 import './App.css';
 
+export const instace = axios.create({
+  baseURL : 'https://fakestoreapi.com/',
+})
 
 function App() {
   const [products, setProducts] = useState([])
   const [users, setUsers] = useState([])
   // getProducts
-  useEffect(()=> {
-    fetch('https://fakestoreapi.com/products')
-      .then((res) => res.json())
-      .then((res) => setProducts(res.map(el => {
+  useEffect(() => {
+    instace.get('products')
+      .then((res) => setProducts(res.data.map(el => {
         return {
           ...el,
-          initprice : el.price,
-          count : 1
+          initprice: el.price,
+          count: 1
         }
       })))
   }, [])
 
   //getUsers
   useEffect(() => {
-    fetch('https://jsonplaceholder.typicode.com/users')
-      .then((res) => res.json())
-      .then((res) => setUsers(res))
+    axios.get('https://jsonplaceholder.typicode.com/users')
+      .then((res) => setUsers([...res.data, { email: "admin", username: '1234', id: '1111' }]))
   }, [])
 
-  
+  // console.log(users);
+
   const navigate = useNavigate()
-  
+
   const [user, setUser] = useState(null);
   const [cart, setCart] = useState([]);
   const [productsFilter, setproductsFilter] = useState(products);
@@ -48,9 +50,9 @@ function App() {
 
   let createUser = (newUser) => {
     setUsers((prev) => {
-      return [...prev, {id : 4, ...newUser}]
+      return [...prev, { id: 4, ...newUser }]
     })
-    
+
   }
 
 
@@ -133,12 +135,12 @@ function App() {
           reset={reset} />}>
           <Route index path='/' element={<HomePage />} />
           <Route path='/products' element={<ProductsPage products={isSorted ? productsFilter : products} addToCart={addToCart} />} />
-          <Route path='/products/:id' element={<ProductPage />}/> 
+          <Route path='/products/:id' element={<ProductPage />} />
           <Route path='/cart' element={<CartPage cart={cart} changeCartToCount={changeCartToCount} total={total} />} />
           <Route path='/cart/order' element={<OrderPage />} />
           <Route path='/login' element={<Login users={users} authUser={authUser} />} />
-          <Route path='/profile/:id' element={<Profile />} />
-          <Route path='/register' element={<Register users={users} createUser={createUser}/> }/>
+          <Route path='/profile/:id' element={<Profile products={products} setProducts={setProducts} />} />
+          <Route path='/register' element={<Register users={users} createUser={createUser} />} />
         </Route>
       </Routes>
     </div>
