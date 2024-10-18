@@ -2,18 +2,21 @@ import React from 'react'
 import style from './CartPage.module.css'
 import CartItem from '../../components/CartItem/CartItem'
 import OrderForm from '../../components/OrderForm/OrderForm'
-const CartPage = ({cart, changeCartToCount, total}) => {
+
+const CartPage = ({ changeCartToCount, total }) => {
+
+  const cart = JSON.parse(localStorage.getItem('cart'))
 
   return (
     <div>
       <h1> total : {total}$</h1>
       {
-        cart.map((cartItem) => {
+        cart?.map((cartItem) => {
           return <CartItem key={cartItem.id} cartItem={cartItem} changeCartToCount={changeCartToCount} />
         })
       }
-      <OrderForm total={total}/>
-      
+      <OrderForm total={total} />
+
     </div>
   )
 }

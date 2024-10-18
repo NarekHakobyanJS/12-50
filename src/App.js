@@ -1,6 +1,6 @@
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import Loyout from './components/Loyout/Loyout';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import HomePage from './pages/HomePage/HomePage';
 import ProductsPage from './pages/ProductsPage/ProductsPage';
 import ProductPage from './pages/ProductPage/ProductPage';
@@ -14,12 +14,30 @@ import axios from 'axios'
 import './App.css';
 
 export const instace = axios.create({
-  baseURL : 'https://fakestoreapi.com/',
+  baseURL: 'https://fakestoreapi.com/',
 })
 
 function App() {
+
+
   const [products, setProducts] = useState([])
   const [users, setUsers] = useState([])
+  const [user, setUser] = useState(null);
+  const [cart, setCart] = useState([]);
+  const [productsFilter, setproductsFilter] = useState(products);
+  const [isSorted, setIsSorted] = useState(false);
+
+  const initalRender = useRef(false)
+
+  useEffect(() => {
+
+    if(initalRender.current){
+      localStorage.setItem('cart', JSON.stringify(cart))
+    }
+   
+    initalRender.current = true
+  }, [cart])
+
   // getProducts
   useEffect(() => {
     instace.get('products')
@@ -41,11 +59,6 @@ function App() {
   // console.log(users);
 
   const navigate = useNavigate()
-
-  const [user, setUser] = useState(null);
-  const [cart, setCart] = useState([]);
-  const [productsFilter, setproductsFilter] = useState(products);
-  const [isSorted, setIsSorted] = useState(false);
 
 
   let createUser = (newUser) => {
@@ -136,7 +149,7 @@ function App() {
           <Route index path='/' element={<HomePage />} />
           <Route path='/products' element={<ProductsPage products={isSorted ? productsFilter : products} addToCart={addToCart} />} />
           <Route path='/products/:id' element={<ProductPage />} />
-          <Route path='/cart' element={<CartPage cart={cart} changeCartToCount={changeCartToCount} total={total} />} />
+          <Route path='/cart' element={<CartPage changeCartToCount={changeCartToCount} total={total} />} />
           <Route path='/cart/order' element={<OrderPage />} />
           <Route path='/login' element={<Login users={users} authUser={authUser} />} />
           <Route path='/profile/:id' element={<Profile products={products} setProducts={setProducts} />} />
