@@ -1,14 +1,10 @@
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import Loyout from './components/Loyout/Loyout';
 import { useState, useEffect, useRef } from 'react';
-import HomePage from './pages/HomePage/HomePage';
-import ProductsPage from './pages/ProductsPage/ProductsPage';
-import ProductPage from './pages/ProductPage/ProductPage';
-import CartPage from './pages/CartPage/CartPage';
-import OrderPage from './pages/OrderPage/OrderPage';
-import Login from './pages/Login/Login';
-import Profile from './pages/Profile/Profile';
-import Register from './pages/Register/Register';
+
+import {HomePage, ProductPage, ProductsPage, CartPage, OrderPage, Login, Profile, Register} from './pages'
+
+import { useFetch } from './hooks/fetchHook';
 import axios from 'axios'
 
 import './App.css';
@@ -17,10 +13,11 @@ export const instace = axios.create({
   baseURL: 'https://fakestoreapi.com/',
 })
 
+
+
+
 function App() {
-
-
-  const [products, setProducts] = useState([])
+  const [products, setProducts] = useFetch('products')
   const [users, setUsers] = useState([])
   const [user, setUser] = useState(null);
   const [cart, setCart] = useState([]);
@@ -29,6 +26,14 @@ function App() {
 
   const initalRender = useRef(false)
 
+  // products?.map((el) => {
+  //   return {
+  //     ...el,
+  //     initprice: el.price,
+  //     count: 1
+  //   }
+  // })
+  // LocalStorage SetItem
   useEffect(() => {
 
     if(initalRender.current){
@@ -39,16 +44,22 @@ function App() {
   }, [cart])
 
   // getProducts
-  useEffect(() => {
-    instace.get('products')
-      .then((res) => setProducts(res.data.map(el => {
-        return {
-          ...el,
-          initprice: el.price,
-          count: 1
-        }
-      })))
-  }, [])
+
+
+
+  
+  // console.log(data);
+  
+  // useEffect(() => {
+  //   instace.get('products')
+  //     .then((res) => setProducts(res.data.map(el => {
+  //       return {
+  //         ...el,
+  //         initprice: el.price,
+  //         count: 1
+  //       }
+  //     })))
+  // }, [])
 
   //getUsers
   useEffect(() => {
@@ -56,7 +67,6 @@ function App() {
       .then((res) => setUsers([...res.data, { email: "admin", username: '1234', id: '1111' }]))
   }, [])
 
-  // console.log(users);
 
   const navigate = useNavigate()
 

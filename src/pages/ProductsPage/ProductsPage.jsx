@@ -8,7 +8,7 @@ const ProductsPage = ({products, addToCart}) => {
     <div>
       <div className={style.products}>
       {
-        products.map((product) => {
+        products?.map((product) => {
           return <Product key={product.id} product={product} addToCart={addToCart} />
         })
       }

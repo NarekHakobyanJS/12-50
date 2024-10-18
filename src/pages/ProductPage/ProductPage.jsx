@@ -1,16 +1,13 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import style from './Product.module.css'
 import { useParams } from 'react-router-dom'
-import { instace } from '../../App.js'
+import { useFetch } from '../../hooks/fetchHook.js'
 
 const ProductPage = () => {
-  const [product, setProduct] = useState(null)
   const {id} = useParams()
-  useEffect(() => {
 
-    instace.get(`products/${id}`)
-      .then((res) => setProduct(res.data))
-  }, [])
+
+  const [product] = useFetch(`products/${id}`)
 
   return (
     <div>
