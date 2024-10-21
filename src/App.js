@@ -1,8 +1,8 @@
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import Loyout from './components/Loyout/Loyout';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, createContext } from 'react';
 
-import {HomePage, ProductPage, ProductsPage, CartPage, OrderPage, Login, Profile, Register} from './pages'
+import { HomePage, ProductPage, ProductsPage, CartPage, OrderPage, Login, Profile, Register } from './pages'
 
 import { useFetch } from './hooks/fetchHook';
 import axios from 'axios'
@@ -14,6 +14,7 @@ export const instace = axios.create({
 })
 
 
+export const MyContext = createContext(null)
 
 
 function App() {
@@ -22,7 +23,10 @@ function App() {
   const [user, setUser] = useState(null);
   const [cart, setCart] = useState([]);
   const [productsFilter, setproductsFilter] = useState(products);
+  console.log(productsFilter);
+
   const [isSorted, setIsSorted] = useState(false);
+
 
   const initalRender = useRef(false)
 
@@ -36,20 +40,16 @@ function App() {
   // LocalStorage SetItem
   useEffect(() => {
 
-    if(initalRender.current){
+    if (initalRender.current) {
       localStorage.setItem('cart', JSON.stringify(cart))
     }
-   
+
     initalRender.current = true
   }, [cart])
 
   // getProducts
 
 
-
-  
-  // console.log(data);
-  
   // useEffect(() => {
   //   instace.get('products')
   //     .then((res) => setProducts(res.data.map(el => {
@@ -88,19 +88,6 @@ function App() {
     navigate('/')
   }
 
-  let sortPriceToAbove = () => {
-    setIsSorted((prev) => true);
-    setproductsFilter(productsFilter.toSorted((a, b) => a.price - b.price));
-  }
-
-  let sortPriceToDown = () => {
-    setIsSorted((prev) => true);
-    setproductsFilter(productsFilter.toSorted((a, b) => b.price - a.price));
-  }
-
-  let reset = () => {
-    setIsSorted((prev) => false);
-  }
   let total = cart.reduce((accum, elem) => {
     return accum + elem.initprice
   }, 0)
@@ -148,24 +135,33 @@ function App() {
 
   return (
     <div className="App">
-      <Routes>
-        <Route path='/' element={<Loyout
-          logOutUser={logOutUser}
-          user={user}
-          cart={cart}
-          sortPriceToAbove={sortPriceToAbove}
-          sortPriceToDown={sortPriceToDown}
-          reset={reset} />}>
-          <Route index path='/' element={<HomePage />} />
-          <Route path='/products' element={<ProductsPage products={isSorted ? productsFilter : products} addToCart={addToCart} />} />
-          <Route path='/products/:id' element={<ProductPage />} />
-          <Route path='/cart' element={<CartPage changeCartToCount={changeCartToCount} total={total} />} />
-          <Route path='/cart/order' element={<OrderPage />} />
-          <Route path='/login' element={<Login users={users} authUser={authUser} />} />
-          <Route path='/profile/:id' element={<Profile products={products} setProducts={setProducts} />} />
-          <Route path='/register' element={<Register users={users} createUser={createUser} />} />
-        </Route>
-      </Routes>
+      <MyContext.Provider value={{
+        logOutUser,
+        user,
+        cart,
+        products,
+        addToCart,
+        changeCartToCount,
+        total,
+        users,
+        createUser,
+        authUser,
+        setProducts
+      }}>
+        <Routes>
+          <Route path='/' element={<Loyout />}>
+            <Route index path='/' element={<HomePage />} />
+            <Route path='/products' element={<ProductsPage />} />
+            <Route path='/products/:id' element={<ProductPage />} />
+            <Route path='/cart' element={<CartPage />} />
+            <Route path='/cart/order' element={<OrderPage />} />
+            <Route path='/login' element={<Login />} />
+            <Route path='/profile/:id' element={<Profile />} />
+            <Route path='/register' element={<Register />} />
+          </Route>
+        </Routes>
+      </MyContext.Provider>
+
     </div>
   );
 }

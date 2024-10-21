@@ -2,16 +2,10 @@ import React from 'react'
 import { Outlet } from 'react-router-dom'
 import Header from '../Header/Header'
 
-const Loyout = ({ cart, sortPriceToAbove, sortPriceToDown, reset, user, logOutUser }) => {
+const Loyout = () => {
   return (
     <div>
-      <Header
-      logOutUser={logOutUser}
-        user={user}
-        cart={cart}
-        sortPriceToAbove={sortPriceToAbove}
-        sortPriceToDown={sortPriceToDown}
-        reset={reset} />
+      <Header />
       <Outlet />
     </div>
   )

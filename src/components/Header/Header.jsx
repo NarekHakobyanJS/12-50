@@ -1,11 +1,14 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import style from './Header.module.css'
 import Nav from '../Nav/Nav'
 import { FaShoppingCart, FaUserAlt } from "react-icons/fa";
 import { NavLink } from 'react-router-dom';
+import { MyContext } from '../../App';
 
 
-const Header = ({ cart, sortPriceToAbove, sortPriceToDown, reset, user, logOutUser }) => {
+const Header = () => {
+
+  const { cart, user, logOutUser } = useContext(MyContext)
   return (
     <header>
       <div className={style.logo_block}>
@@ -13,9 +16,6 @@ const Header = ({ cart, sortPriceToAbove, sortPriceToDown, reset, user, logOutUs
       </div>
       <div className={style.nav_block}>
         <Nav />
-        <button onClick={sortPriceToAbove}>sort price to above</button>
-        <button onClick={sortPriceToDown}>sort price to down</button>
-        <button onClick={reset}>Reset</button>
 
       </div>
       <div className={style.icons_block}>
@@ -24,11 +24,11 @@ const Header = ({ cart, sortPriceToAbove, sortPriceToDown, reset, user, logOutUs
           <sup className={style.cartCount}>{cart.length}</sup>
         </NavLink>
         {
-          user 
-          ? <>
-            <FaUserAlt /> {user.name}
-            <button onClick={logOutUser}>Log Out</button>
-          </>
+          user
+            ? <>
+              <FaUserAlt /> {user.name}
+              <button onClick={logOutUser}>Log Out</button>
+            </>
             :
             <NavLink to='/login'>  Sign In </NavLink>
         }

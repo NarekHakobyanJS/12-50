@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import axios from 'axios'
-import instace from '../../App.js'
-const Profile = ({ products, setProducts }) => {
+import instace, { MyContext } from '../../App.js'
+const Profile = () => {
+    const { products, setProducts } = useContext(MyContext)
     const [title, setTitle] = useState('')
     const [price, setPrice] = useState('')
     const { id } = useParams();

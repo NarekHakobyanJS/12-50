@@ -1,9 +1,11 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import style from './Login.module.css'
 import { Formik, Form, Field } from 'formik'
 import { useNavigate } from 'react-router-dom'
+import { MyContext } from '../../App'
 
-const Login = ({ users, authUser }) => {
+const Login = () => {
+    const {users, authUser} = useContext(MyContext)
     const navigate = useNavigate()
 
     const authorization = (values, users) => {

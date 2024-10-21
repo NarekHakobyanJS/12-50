@@ -8,10 +8,10 @@ const instace = axios.create({
 export function useFetch(url){
     const [data, setData] = useState(null);
 
-    useEffect(() => {
+ 
         instace.get(url)
             .then(res => setData(res.data))
-    }, [])
+  
 
     return [data, setData]
 }

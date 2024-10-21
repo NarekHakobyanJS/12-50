@@ -5,7 +5,7 @@ const CartItem = ({ cartItem, changeCartToCount }) => {
   let [count, setCount] = useState(cartItem.count)
 
   const plus = () => {
-  
+
     setCount(++count)
     changeCartToCount(count, cartItem)
   }

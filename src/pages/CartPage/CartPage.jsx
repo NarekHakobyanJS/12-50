@@ -1,10 +1,12 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import style from './CartPage.module.css'
 import CartItem from '../../components/CartItem/CartItem'
 import OrderForm from '../../components/OrderForm/OrderForm'
+import { MyContext } from '../../App'
 
-const CartPage = ({ changeCartToCount, total }) => {
+const CartPage = () => {
 
+  const {changeCartToCount, total} = useContext(MyContext)
   const cart = JSON.parse(localStorage.getItem('cart'))
 
   return (
